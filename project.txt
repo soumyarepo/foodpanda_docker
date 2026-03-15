@@ -1,0 +1,23 @@
+foodpanda/
+│
+├── docker-compose.yml
+├── login-service/
+│   ├── Dockerfile
+│   ├── package.json
+│   └── server.js
+├── foodmenu-service/
+│   ├── Dockerfile
+│   ├── package.json
+│   └── server.js
+├── orderdetails-service/
+│   ├── Dockerfile
+│   ├── package.json
+│   └── server.js
+├── trackdelivery-service/
+│   ├── Dockerfile
+│   ├── package.json
+│   └── server.js
+└── notification-service/
+    ├── Dockerfile
+    ├── package.json
+    └── server.js

@@ -1,0 +1,32 @@
+version: '3.8'
+
+services:
+  login-service:
+    build: ./login-service
+    container_name: login-service
+    ports:
+      - "5001:5000"
+
+  foodmenu-service:
+    build: ./foodmenu-service
+    container_name: foodmenu-service
+    ports:
+      - "5002:5000"
+
+  orderdetails-service:
+    build: ./orderdetails-service
+    container_name: orderdetails-service
+    ports:
+      - "5003:5000"
+
+  trackdelivery-service:
+    build: ./trackdelivery-service
+    container_name: trackdelivery-service
+    ports:
+      - "5004:5000"
+
+  notification-service:
+    build: ./notification-service
+    container_name: notification-service
+    ports:
+      - "5005:5000"
