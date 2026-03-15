@@ -2,7 +2,10 @@ const express = require("express");
 const app = express();
 
 app.get("/", (req, res) => {
-  res.send("Login Service is running");
+  res.json({
+    service: "Login Service",
+    message: "User logged in successfully"
+  });
 });
 
 app.listen(5000, () => {

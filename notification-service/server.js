@@ -1,8 +1,11 @@
 const express = require("express");
 const app = express();
 
-app.get("/", (req, res) => {
-  res.send("Notification Service is running");
+app.get("/notify", (req, res) => {
+  res.json({
+    service: "Notification Service",
+    message: "Notification sent successfully"
+  });
 });
 
 app.listen(5000, () => {

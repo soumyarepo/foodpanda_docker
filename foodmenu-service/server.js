@@ -2,7 +2,15 @@ const express = require("express");
 const app = express();
 
 app.get("/", (req, res) => {
-  res.send("Food Menu Service is running");
+  res.json({
+    service: "Food Menu Service",
+    menu: [
+      "Chicken Biryani",
+      "Pizza Combo",
+      "Burger Meal",
+      "Fried Rice"
+    ]
+  });
 });
 
 app.listen(5000, () => {

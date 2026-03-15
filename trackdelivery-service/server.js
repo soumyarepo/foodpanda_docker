@@ -2,7 +2,10 @@ const express = require("express");
 const app = express();
 
 app.get("/", (req, res) => {
-  res.send("Track Delivery Service is running");
+  res.json({
+    service: "Track Delivery Service",
+    status: "Order is on the way"
+  });
 });
 
 app.listen(5000, () => {
