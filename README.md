@@ -1,65 +1,50 @@
 # 🍔 FoodPanda Microservices Demo using Docker
 
-This project demonstrates a **simple microservices architecture using Docker containers**.
+This project demonstrates a simple **Microservices Architecture using Docker**.
 
-The purpose of this project is to help students understand an important concept:
+The main goal of this project is to show students that:
 
-> **In Microservices Architecture, if one module fails or is removed, the other modules continue to work independently.**
+> In microservices, if one module fails, the remaining modules can still continue working.
 
-This demo simulates a **FoodPanda-like application** where each feature runs as an independent microservice.
+This demo simulates a FoodPanda-style application with the following services:
 
----
+- Login Service
+- Food Menu Service
+- Order Details Service
+- Track Delivery Service
+- Notification Service
 
-# 🧠 Microservices in this Project
-
-The application is divided into **five independent services**:
-
-| Service | Purpose |
-|------|------|
-| Login Service | Handles user authentication |
-| Food Menu Service | Displays available food items |
-| Order Details Service | Handles order creation and details |
-| Track Delivery Service | Tracks delivery status |
-| Notification Service | Sends notifications to users |
-
-Each service runs inside its **own Docker container**.
+Each service runs in its own Docker container.
 
 ---
 
 # 📦 Project Structure
 
-```
+```bash
 foodpanda/
 │
 ├── docker-compose.yml
-│
 ├── login-service/
 │   ├── Dockerfile
 │   ├── package.json
 │   └── server.js
-│
 ├── foodmenu-service/
 │   ├── Dockerfile
 │   ├── package.json
 │   └── server.js
-│
 ├── orderdetails-service/
 │   ├── Dockerfile
 │   ├── package.json
 │   └── server.js
-│
 ├── trackdelivery-service/
 │   ├── Dockerfile
 │   ├── package.json
 │   └── server.js
-│
 └── notification-service/
     ├── Dockerfile
     ├── package.json
     └── server.js
 ```
-
-Each folder represents **one microservice**.
 
 ---
 
@@ -69,204 +54,158 @@ Each folder represents **one microservice**.
 - Docker Compose
 - Node.js
 - Express.js
+- Axios
 
 ---
 
-# 🚀 Running the Application
+# 🚀 How to Run
 
-### Step 1 — Clone the repository
+Clone the repository:
 
 ```bash
 git clone https://github.com/YOUR_USERNAME/foodpanda-microservices-demo.git
 cd foodpanda-microservices-demo
 ```
 
----
-
-### Step 2 — Start all services
+Start all services:
 
 ```bash
 docker-compose up --build
 ```
 
-Docker will automatically:
+Or run in background:
 
-1. Build images for each service  
-2. Create containers  
-3. Start all services  
-
----
-
-# 🌐 Access the Services
-
-Open the following URLs in your browser:
-
-| Service | URL |
-|------|------|
-Login Service | http://localhost:5001 |
-Food Menu Service | http://localhost:5002 |
-Order Details Service | http://localhost:5003 |
-Track Delivery Service | http://localhost:5004 |
-Notification Service | http://localhost:5005 |
-
-Example response:
-
-```
-Login Service is running
+```bash
+docker-compose up --build -d
 ```
 
 ---
 
-# 🧪 Microservices Failure Demonstration
+# 🌐 Service URLs
 
-This is the **main learning objective of the project**.
+- Login Service → http://localhost:5001
+- Food Menu Service → http://localhost:5002
+- Order Details Service → http://localhost:5003
+- Track Delivery Service → http://localhost:5004
+- Notification Service → http://localhost:5005/notify
 
-We will simulate a **service failure**.
+---
 
-### Stop Notification Service
+# 🔁 How This Demo Works
+
+The most important part of this project is the **Order Details Service**.
+
+When you open:
+
+```bash
+http://localhost:5003
+```
+
+The Order Details Service internally calls the Notification Service.
+
+If Notification Service is running, the response will show:
+
+```json
+{
+  "service": "Order Details Service",
+  "order": "Order placed successfully",
+  "item": "Chicken Biryani",
+  "notification": "Notification sent successfully"
+}
+```
+
+---
+
+# 💥 Failure Demo
+
+Now stop the Notification Service:
 
 ```bash
 docker stop notification-service
 ```
 
-Now check the services again.
-
-| Service | Status |
-|------|------|
-Login | ✅ Working |
-Food Menu | ✅ Working |
-Order Details | ✅ Working |
-Track Delivery | ✅ Working |
-Notification | ❌ Stopped |
-
-This demonstrates:
-
-> **Failure of one microservice does not break the entire application.**
-
----
-
-# 🔥 Stronger Demonstration (Remove a Service)
-
-You can even remove a service completely.
+Open Order Details Service again:
 
 ```bash
-docker rm -f notification-service
+http://localhost:5003
 ```
 
-Now check running containers.
+Now the output becomes:
 
-```bash
-docker ps
+```json
+{
+  "service": "Order Details Service",
+  "order": "Order placed successfully",
+  "item": "Chicken Biryani",
+  "notification": "Notification service is unavailable, but order still works"
+}
 ```
 
-You will see that **all other services are still running**.
+This proves that:
+
+> Even if one microservice fails, the whole application does not stop.
+
+This is called **fault isolation** or **graceful degradation** in microservices.
 
 ---
 
-# 📊 Verify Running Containers
+# 🧑‍🏫 Trainer Explanation
 
-```bash
-docker ps
-```
+In monolithic architecture, if one important module crashes, the whole application may be affected.
 
-Example output:
+In microservices architecture, each module runs independently in its own container.
 
-```
-login-service
-foodmenu-service
-orderdetails-service
-trackdelivery-service
-```
+So if Notification Service fails:
 
-Notification service will be missing if removed.
+- Login still works ✅
+- Food Menu still works ✅
+- Order still works ✅
+- Track Delivery still works ✅
+- Only Notification fails ❌
 
----
-
-# 🧑‍🏫 Trainer Explanation (For Classroom)
-
-In **Monolithic Architecture**
-
-```
-Login + Menu + Order + Delivery + Notification
-(all inside one application)
-```
-
-If one module crashes, the **entire application may fail**.
-
-Example:
-
-```
-Notification crashes → Whole system affected
-```
-
----
-
-In **Microservices Architecture**
-
-Each module runs independently.
-
-```
-Login Service
-Food Menu Service
-Order Service
-Tracking Service
-Notification Service
-```
-
-Each service runs inside its **own container**.
-
-So if one service fails:
-
-```
-Notification Service ❌
-```
-
-Other services continue:
-
-```
-Login Service ✅
-Food Menu Service ✅
-Order Service ✅
-Tracking Service ✅
-```
-
-This is the **main advantage of Microservices Architecture**.
+This is the biggest advantage of microservices.
 
 ---
 
 # 🐳 Useful Docker Commands
 
-Start containers
+Start services:
 
 ```bash
 docker-compose up --build
 ```
 
-Run in background
+Run in background:
 
 ```bash
 docker-compose up -d
 ```
 
-List containers
+Check running containers:
 
 ```bash
 docker ps
 ```
 
-Stop a container
+Stop one service:
 
 ```bash
 docker stop notification-service
 ```
 
-Remove container
+Start again:
+
+```bash
+docker start notification-service
+```
+
+Remove a service:
 
 ```bash
 docker rm -f notification-service
 ```
 
-Stop everything
+Stop everything:
 
 ```bash
 docker-compose down
@@ -278,23 +217,23 @@ docker-compose down
 
 After this demo, students will understand:
 
-- What Microservices Architecture is
-- How Docker runs independent services
-- Why Microservices improve system reliability
-- How failure isolation works
-- How Docker containers support Microservices architecture
+- What microservices are
+- How Docker runs microservices in separate containers
+- How one service can call another
+- What happens when one service fails
+- Why microservices are more reliable than monolithic applications
 
 ---
 
 # 📌 Best Use Case
 
-This project is perfect for:
+This project is useful for:
 
-- DevOps Training
-- Docker Workshops
-- Microservices Introduction
-- Classroom Demonstrations
+- Docker classroom demos
+- DevOps workshops
+- Microservices introduction sessions
+- Beginner system design explanation
 
 ---
 
-⭐ If this project helps you in learning, consider giving the repository a **star**.
+⭐ If this project helped you, consider giving it a star.
